@@ -1,7 +1,0 @@
-numpy
-pandas
-scipy
-copulas
-matplotlib
-pyyaml
-pytest

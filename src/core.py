@@ -55,7 +55,7 @@ def simulate_copula_forecast(copula, u_future: np.ndarray, data: pd.DataFrame,
 def plot_copula_forecast(x: np.ndarray, y: np.ndarray, xlabel: str, ylabel: str,
                         title: str, output_path: Path):
     """Plot copula forecast """
-                        if plot:
+    if plot:
         fig, ax = plt.subplots(figsize=(8, 6))
     
         ax.scatter(x, y, alpha=0.5, s=20, color="#4A90A4", edgecolors='none')

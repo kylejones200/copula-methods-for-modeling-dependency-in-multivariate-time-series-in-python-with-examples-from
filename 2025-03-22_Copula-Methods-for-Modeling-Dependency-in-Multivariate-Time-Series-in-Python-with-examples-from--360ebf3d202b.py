@@ -11,6 +11,7 @@ import pandas as pd
 import pandas_datareader.data as web
 import scipy.stats as stats
 import yfinance as yf
+np.random.seed(42)
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -20,7 +21,6 @@ logging.basicConfig(
 
 
 
-np.random.seed(42)
 # Retrieve interest rates from FRED
 interest_rate_data = web.DataReader('MORTGAGE30US', 'fred', start='2000-01-01', end='2025-01-01').dropna()
 # Retrieve S&P 500 returns from Yahoo Finance
@@ -56,7 +56,6 @@ plt.show()
 
 
 # Set seed for reproducibility
-np.random.seed(42)
 
 # Fetch real macroeconomic data from FRED
 inflation = web.DataReader('FPCPITOTLZGUSA', 'fred', start='2000-01-01', end='2025-01-01')

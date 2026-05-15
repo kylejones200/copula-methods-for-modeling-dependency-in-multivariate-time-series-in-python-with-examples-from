@@ -3,7 +3,7 @@
 
 
 from copulas.bivariate import Bivariate
-from copulas.bivariate import Bivariate, CopulaTypes
+from copulas.bivariate import Bivariate
 import logging
 import matplotlib.pyplot as plt
 import numpy as np

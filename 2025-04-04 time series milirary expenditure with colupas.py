@@ -2,180 +2,151 @@
 
 Magics and shell lines are commented out. Run with a normal Python interpreter."""
 
-
-# --- code cell ---
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy.stats import gumbel_r
 from sklearn.preprocessing import QuantileTransformer
 
-# Load and clean data
 
-data = pd.read_csv(
-    "/Users/kylejonespatricia/Downloads/NMC_Documentation-6.0/NMC-60-abridged/NMC-60-abridged.csv"
-)
-
-
-# Preprocess the data: Drop missing values and select relevant columns
-data_clean = data[["milex", "upop"]].dropna()
-
-# Use QuantileTransformer to transform data into uniform distribution for copula modeling
-scaler = QuantileTransformer()
-data_scaled = scaler.fit_transform(data_clean)
-
-
-# Function to simulate Gumbel copula
 def simulate_gumbel_copula(n, theta=1.5):
     u1 = gumbel_r.rvs(loc=0, scale=1, size=n)
     u2 = gumbel_r.rvs(loc=0, scale=1, size=n)
-
-    # Apply the Gumbel copula dependency structure formula
     u1_copula = gumbel_r.cdf(u1)
     u2_copula = gumbel_r.cdf(u2)
-
     return np.column_stack([u1_copula, u2_copula])
 
 
-# Simulate Gumbel copula data
-simulated_data_copula = simulate_gumbel_copula(len(data_scaled))
+def main() -> None:
+    data = pd.read_csv("data/NMC_Documentation-6.0/NMC-60-abridged/NMC-60-abridged.csv")
 
-# Inverse transform the copula data back to original scale using the QuantileTransformer
-simulated_data_original = scaler.inverse_transform(simulated_data_copula)
+    data_clean = data[["milex", "upop"]].dropna()
 
-# Visualize the original data vs. simulated data
-plt.figure(figsize=(12, 6))
+    scaler = QuantileTransformer()
 
-# Plot original data
-plt.subplot(1, 2, 1)
-plt.scatter(data_clean["milex"], data_clean["upop"], color="blue", alpha=0.5)
-plt.title("Original Data: Military Expenditure vs. Urban Population")
-plt.xlabel("Military Expenditure")
-plt.ylabel("Urban Population")
+    data_scaled = scaler.fit_transform(data_clean)
 
-# Plot simulated data
-plt.subplot(1, 2, 2)
-plt.scatter(
-    simulated_data_original[:, 0], simulated_data_original[:, 1], color="red", alpha=0.5
-)
-plt.title("Simulated Data from Gumbel Copula")
-plt.xlabel("Military Expenditure")
-plt.ylabel("Urban Population")
+    simulated_data_copula = simulate_gumbel_copula(len(data_scaled))
 
-plt.tight_layout()
-plt.show()
+    simulated_data_original = scaler.inverse_transform(simulated_data_copula)
 
+    plt.figure(figsize=(12, 6))
 
-# --- code cell ---
+    plt.subplot(1, 2, 1)
 
+    plt.scatter(data_clean["milex"], data_clean["upop"], color="blue", alpha=0.5)
 
-# Load data (make sure to update the file path accordingly)
+    plt.title("Original Data: Military Expenditure vs. Urban Population")
 
+    plt.xlabel("Military Expenditure")
 
-# Preprocess the data: Drop missing values and select relevant columns
-data_clean = data[["milex", "upop", "year"]].dropna()
+    plt.ylabel("Urban Population")
 
-# Use QuantileTransformer to transform data into uniform distribution for copula modeling
-scaler = QuantileTransformer()
-data_scaled = scaler.fit_transform(data_clean[["milex", "upop"]])
+    plt.subplot(1, 2, 2)
 
+    plt.scatter(
+        simulated_data_original[:, 0],
+        simulated_data_original[:, 1],
+        color="red",
+        alpha=0.5,
+    )
 
-# Function to simulate Gumbel copula
-def simulate_gumbel_copula(n, theta=1.5):
-    u1 = gumbel_r.rvs(loc=0, scale=1, size=n)
-    u2 = gumbel_r.rvs(loc=0, scale=1, size=n)
+    plt.title("Simulated Data from Gumbel Copula")
 
-    # Apply the Gumbel copula dependency structure formula
-    u1_copula = gumbel_r.cdf(u1)
-    u2_copula = gumbel_r.cdf(u2)
+    plt.xlabel("Military Expenditure")
 
-    return np.column_stack([u1_copula, u2_copula])
+    plt.ylabel("Urban Population")
 
+    plt.tight_layout()
 
-# Simulate Gumbel copula data
-simulated_data_copula = simulate_gumbel_copula(len(data_scaled))
+    plt.show()
 
-# Inverse transform the copula data back to original scale using the QuantileTransformer
-simulated_data_original = scaler.inverse_transform(simulated_data_copula)
+    data_clean = data[["milex", "upop", "year"]].dropna()
 
-# Visualize the original and simulated data in 3D
-fig = plt.figure(figsize=(12, 6))
+    scaler = QuantileTransformer()
 
-# Plot original data
-ax1 = fig.add_subplot(121, projection="3d")
-ax1.scatter(
-    data_clean["milex"], data_clean["upop"], data_clean["year"], color="blue", alpha=0.5
-)
-ax1.set_title("Original Data: Military Expenditure vs. Urban Population")
-ax1.set_xlabel("Military Expenditure")
-ax1.set_ylabel("Urban Population")
-ax1.set_zlabel("Year")
+    data_scaled = scaler.fit_transform(data_clean[["milex", "upop"]])
 
-# Plot simulated data
-ax2 = fig.add_subplot(122, projection="3d")
-ax2.scatter(
-    simulated_data_original[:, 0],
-    simulated_data_original[:, 1],
-    data_clean["year"],
-    color="red",
-    alpha=0.5,
-)
-ax2.set_title("Simulated Data from Gumbel Copula")
-ax2.set_xlabel("Military Expenditure")
-ax2.set_ylabel("Urban Population")
-ax2.set_zlabel("Year")
+    simulated_data_copula = simulate_gumbel_copula(len(data_scaled))
 
-plt.tight_layout()
-plt.show()
+    simulated_data_original = scaler.inverse_transform(simulated_data_copula)
 
+    fig = plt.figure(figsize=(12, 6))
 
-# --- code cell ---
+    ax1 = fig.add_subplot(121, projection="3d")
 
+    ax1.scatter(
+        data_clean["milex"],
+        data_clean["upop"],
+        data_clean["year"],
+        color="blue",
+        alpha=0.5,
+    )
 
-# Load data (make sure to update the file path accordingly)
+    ax1.set_title("Original Data: Military Expenditure vs. Urban Population")
 
+    ax1.set_xlabel("Military Expenditure")
 
-# Preprocess the data: Drop missing values and select relevant columns
-data_clean = data[["milex", "upop", "year"]].dropna()
+    ax1.set_ylabel("Urban Population")
 
-# Use QuantileTransformer to transform data into uniform distribution for copula modeling
-scaler = QuantileTransformer()
-data_scaled = scaler.fit_transform(data_clean[["milex", "upop"]])
+    ax1.set_zlabel("Year")
 
+    ax2 = fig.add_subplot(122, projection="3d")
 
-# Function to simulate Gumbel copula
-def simulate_gumbel_copula(n, theta=1.5):
-    u1 = gumbel_r.rvs(loc=0, scale=1, size=n)
-    u2 = gumbel_r.rvs(loc=0, scale=1, size=n)
+    ax2.scatter(
+        simulated_data_original[:, 0],
+        simulated_data_original[:, 1],
+        data_clean["year"],
+        color="red",
+        alpha=0.5,
+    )
 
-    # Apply the Gumbel copula dependency structure formula
-    u1_copula = gumbel_r.cdf(u1)
-    u2_copula = gumbel_r.cdf(u2)
+    ax2.set_title("Simulated Data from Gumbel Copula")
 
-    return np.column_stack([u1_copula, u2_copula])
+    ax2.set_xlabel("Military Expenditure")
 
+    ax2.set_ylabel("Urban Population")
 
-# Simulate Gumbel copula data
-simulated_data_copula = simulate_gumbel_copula(len(data_scaled))
+    ax2.set_zlabel("Year")
 
-# Inverse transform the copula data back to original scale using the QuantileTransformer
-simulated_data_original = scaler.inverse_transform(simulated_data_copula)
+    plt.tight_layout()
 
-# Visualize the original and simulated data in 3D
-fig = plt.figure(figsize=(12, 6))
+    plt.show()
 
-# Plot original data
-ax1 = fig.add_subplot(121, projection="3d")
-ax1.scatter(
-    data_clean["milex"], data_clean["upop"], data_clean["year"], color="blue", alpha=0.5
-)
-ax1.set_title("Original Data: Military Expenditure vs. Urban Population")
-ax1.set_xlabel("Military Expenditure")
-ax1.set_ylabel("Urban Population")
-ax1.set_zlabel("Year")
+    data_clean = data[["milex", "upop", "year"]].dropna()
+
+    scaler = QuantileTransformer()
+
+    data_scaled = scaler.fit_transform(data_clean[["milex", "upop"]])
+
+    simulated_data_copula = simulate_gumbel_copula(len(data_scaled))
+
+    simulated_data_original = scaler.inverse_transform(simulated_data_copula)
+
+    fig = plt.figure(figsize=(12, 6))
+
+    ax1 = fig.add_subplot(121, projection="3d")
+
+    ax1.scatter(
+        data_clean["milex"],
+        data_clean["upop"],
+        data_clean["year"],
+        color="blue",
+        alpha=0.5,
+    )
+
+    ax1.set_title("Original Data: Military Expenditure vs. Urban Population")
+
+    ax1.set_xlabel("Military Expenditure")
+
+    ax1.set_ylabel("Urban Population")
+
+    ax1.set_zlabel("Year")
+
+    plt.tight_layout()
+
+    plt.show()
 
 
-# Enable interactive plotting
-plt.tight_layout()
-plt.show()
+if __name__ == "__main__":
+    main()

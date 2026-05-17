@@ -47,3 +47,11 @@ Edit `config.yaml` to customize:
 - By default, generates synthetic data for demonstration.
 - Copula fitting requires sufficient data for reliable parameter estimation.
 - Forecasts preserve dependence structure but may not capture all dynamics.
+
+## Disclaimer
+
+Educational/demo code only. Not financial, safety, or engineering advice. Use at your own risk. Verify results independently before any production or operational use.
+
+## License
+
+MIT — see [LICENSE](LICENSE).

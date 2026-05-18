@@ -15,8 +15,13 @@ from src.core import (
     fit_studentt_copula,
     generate_inflation_unemployment_data,
     generate_stock_interest_data,
+    plot_copula_forecast,
     simulate_copula_forecast,
     transform_to_uniform,
+)
+
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
 
@@ -28,7 +33,7 @@ def load_config(config_path: Path | None = None) -> dict:
         return yaml.safe_load(f)
 
 
-def prepare_parser() -> None:
+def main() -> None:
     parser = argparse.ArgumentParser(
         description="Copula Methods for Multivariate Time Series"
     )
@@ -99,10 +104,6 @@ def prepare_parser() -> None:
         output_dir / "copula_forecast_inflation_unemployment.png",
     )
     logging.info(f"Analysis complete. Figures saved to {output_dir}")
-
-
-def main() -> None:
-    prepare_parser()
 
 
 if __name__ == "__main__":

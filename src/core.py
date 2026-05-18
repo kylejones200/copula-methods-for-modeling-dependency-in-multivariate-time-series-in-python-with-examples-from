@@ -44,15 +44,7 @@ def simulate_copula_forecast(copula, u_future: np.ndarray, data: pd.DataFrame, v
     rates_forecast = np.quantile(data[var2], v_future['v'])
     return (returns_forecast, rates_forecast)
 
-def plot_copula_forecast(
-    x: np.ndarray,
-    y: np.ndarray,
-    xlabel: str,
-    ylabel: str,
-    title: str,
-    output_path: Path,
-    plot: bool = True,
-):
+def plot_copula_forecast(x: np.ndarray, y: np.ndarray, xlabel: str, ylabel: str, title: str, output_path: Path, plot: bool=True):
     """Plot copula forecast"""
     if plot:
         fig, ax = plt.subplots(figsize=(8, 6))

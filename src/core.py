@@ -1,6 +1,5 @@
 """Core functions for copula methods in multivariate time series."""
 
-import logging
 from pathlib import Path
 from typing import Tuple
 
@@ -9,9 +8,6 @@ import numpy as np
 import pandas as pd
 import scipy.stats as stats
 from copulas.bivariate import Clayton, StudentT
-
-# Configure logging
-logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
 def generate_stock_interest_data(time_steps: int = 500, seed: int = 42) -> pd.DataFrame:
@@ -63,10 +59,8 @@ def simulate_copula_forecast(
 ) -> Tuple[np.ndarray, np.ndarray]:
     """Simulate forecasts using copula."""
     v_future = copula.inverse_transform(pd.DataFrame({"u": u_future}))
-
     returns_forecast = np.quantile(data[var1], u_future)
     rates_forecast = np.quantile(data[var2], v_future["v"])
-
     return returns_forecast, rates_forecast
 
 
@@ -81,10 +75,8 @@ def plot_copula_forecast(
     """Plot copula forecast"""
     if plot:
         fig, ax = plt.subplots(figsize=(8, 6))
-
         ax.scatter(x, y, alpha=0.5, s=20, color="#4A90A4", edgecolors="none")
         ax.set_xlabel(xlabel)
         ax.set_ylabel(ylabel)
-
         plt.savefig(output_path, dpi=100, bbox_inches="tight")
         plt.close()

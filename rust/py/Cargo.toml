@@ -1,0 +1,15 @@
+[package]
+name = "copula_methods_for_modeling_dependency_in_multivariate_time_series_in_python_with_examples_from_rs"
+description = "Python bindings (PyO3) for copula_methods_for_modeling_dependency_in_multivariate_time_series_in_python_with_examples_from_core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+name = "copula_methods_for_modeling_dependency_in_multivariate_time_series_in_python_with_examples_from_rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+copula_methods_for_modeling_dependency_in_multivariate_time_series_in_python_with_examples_from_core = { path = "../core" }
+pyo3 = { version = "0.28", features = ["extension-module"] }
+numpy = "0.28"

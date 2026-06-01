@@ -1,0 +1,9 @@
+[package]
+name = "copula_methods_for_modeling_dependency_in_multivariate_time_series_in_python_with_examples_from_core"
+description = "Pearson correlation matrix on multivariate data"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+path = "src/lib.rs"
